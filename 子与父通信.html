@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <div>
+        <mycomp @sendmsg="getson"></mycomp>
+    </div>
+</div>
+<script>
+    Vue.component('mycomp',{
+        template:"<div>儿子<button @click='send'>发送消息</button></div> ",
+        data(){
+            return{
+                msg:"这是儿子"
+            }
+        },
+        methods:{
+            send(){
+                this.$emit("sendmsg")
+            }
+        }
+    })
+
+    var vm=new Vue({
+        el:'#app',
+        data:{
+            msg:''
+        },
+        methods:{
+          getson(msg){
+              console.log('我儿子来信了'+msg)
+          }
+        }
+    })
+</script>
+</body>
+</html>

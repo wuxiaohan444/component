@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .box {
+
+        }
+
+        .comp-enter {
+            margin-left: -200px;
+        }
+
+        .comp-enter-to, .comp-leave {
+            margin-left: 0;
+        }
+
+        .comp-leave-to {
+            margin-left: 200px;
+        }
+
+        .comp-enter-active, .comp-leave-active {
+            transition: all 1s linear;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <a href="#/login" id="login">登陆</a>
+    <a href="#/register" id="register">注册</a>
+    <transition name="comp" mode="out-in">
+        <component :is="currComp"></component>
+    </transition>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script src="jquery.js"></script>
+<script type="text/template" id="login-tpl">
+    <div class="box">
+        <h2>登陆</h2>
+        用户名：<input type="text"><br>
+        密&nbsp;&nbsp;&nbsp;码：<input type="password">
+    </div>
+</script>
+<script type="text/template" id="register-tpl">
+    <div class="box">
+        <h2>注册</h2>
+        用户名：<input type="text"><br>
+        密&nbsp;&nbsp;&nbsp;码：<input type="password">
+        <br>
+        确认密码：<input type="password">
+    </div>
+</script>
+<script>
+    Vue.component("login", {
+        template: "#login-tpl"
+    })
+
+    Vue.component("register", {
+        template: "#register-tpl"
+    })
+
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            currComp: "login"
+        },
+        created() {
+            this.changeHash();
+            window.onhashchange = _ => {
+                this.changeHash();
+            }
+        },
+        methods: {
+            changeHash() {
+                switch (location.hash) {
+                    case "#/login":
+                        this.currComp = "login"
+                        break;
+                    case "#/register":
+                        this.currComp = "register"
+                        break;
+                }
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

@@ -90,3 +90,49 @@
     </body>
     </html>
     ```
+    
+    ##ps:补充一些兄弟通信
+    两个兄弟组件因为是相互独立的，因此需要第三方来实现通信
+   + $on是用来注册事件的
+   +  $emit是用来触发事件的
+   +    $on注册的事件，只能在当前实例中被$emit触发
+   + 新建一个vue实例，这个实例可以用来注册事件以及触发事件     从而达到兄弟组件之间的通信效果
+
+   ```javascript
+         var messageHub = new Vue();
+   
+   
+           Vue.component("bigbrother", {
+               template: "<h1>哥哥组件</h1>",
+               created(){
+                   messageHub.$on("listenDdMsg", this.getMsgFromDd)
+               },
+               methods: {
+                   getMsgFromDd(msg){
+                       console.log("我家兄弟来信了， 弟弟说:" + msg);
+                   }
+               }
+           })
+   
+           Vue.component("youngbrother", {
+               template: "<div><h1>弟弟组件</h1><button @click='btnClick'>发送消息给哥哥</button></div>",
+               methods: {
+                   btnClick(){
+                       messageHub.$emit("listenDdMsg", "我要结婚了，你快来上份子钱！！")
+                   }
+               }
+           })
+   
+           var vm = new Vue({
+               el: "#app",
+               data: {
+               }
+           })
+
+   ````
+   
+
+    
+    
+      
+    

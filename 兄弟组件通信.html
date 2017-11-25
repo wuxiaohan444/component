@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <one></one>
+    <two></two>
+</div>
+<script>
+    var messageHub=new Vue();
+
+    Vue.component("one",{
+        template:"<h1>第一个组件</h1>",
+        created(){
+            messageHub.$on("listenDdMsg",this.getmsg)
+        },
+        methods:{
+            getmsg(msg){
+                console.log("二来信了"+msg);
+            }
+        }
+    })
+
+
+    Vue.component("two",{
+        template:"<div><h1>two组件<button @click='btn'>给one</button></h1></div>",
+        methods:{
+            btn(){
+            messageHub.$emit("listenDdMsg","我要结婚了，你快来上份子钱！！")
+            }
+        }
+
+    })
+
+
+
+
+    var vm=new Vue({
+        el:'#app',
+        data:{
+            msg:'大家好'
+        }
+    })
+</script>
+</body>
+</html>
